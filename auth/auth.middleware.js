@@ -13,8 +13,8 @@ const authMiddleware = async (req, res, next) => {
             throw new Error('Authorization token is missing.')
         }
 
-        const { username } = authService.verifyToken(token);
-        const userEntity = await usersDao.getUser(username);
+        const { email } = authService.verifyToken(token);
+        const userEntity = await usersDao.getUser({ email });
 
         if (!userEntity || userEntity.token !== token) {
             throw new Error('Token is invalid.')

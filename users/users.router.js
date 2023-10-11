@@ -9,6 +9,9 @@ usersRouter.post('/signup', userValidatorMiddleware, usersController.signupHandl
 usersRouter.post('/login', userValidatorMiddleware, usersController.loginHandler);
 usersRouter.post('/logout', authMiddleware, usersController.logoutHandler);
 usersRouter.get('/current', authMiddleware, usersController.currentHandler);
+usersRouter.get('/verify/:verificationToken', usersController.verifyHandler);
+usersRouter.post('/verify', usersController.resendVerificationHandler);
+
 usersRouter.get('/secret', authMiddleware, (req, res) => res.status(200).send({ message: 'Hello from secret area.' }))
 
 module.exports = {

@@ -1,3 +1,4 @@
+const { v4: uuid } = require('uuid');
 const { User } = require("./user.model");
 
 class DuplicatedKeyError extends Error {
@@ -14,7 +15,11 @@ class UnknownDatabaseError extends Error {
 
 const createUser = async (userData) => {
     try {
-        return await User.create(userData);
+        return await User.create({
+            ...userData,
+            verified: false,
+            verificationToken: uuid()
+        });
     } catch (e) {
         console.error(e);
  
@@ -27,18 +32,18 @@ const createUser = async (userData) => {
     }
 };
 
-const getUser = async (username) => {
+const getUser = async (filter) => {
     try {
-        return await User.findOne({ username });
+        return await User.findOne(filter);
     } catch (e) {
         console.error(e);
         throw new UnknownDatabaseError();
     }
 };
 
-const updateUser = async (username, userData) => {
+const updateUser = async (email, userData) => {
     try {
-        return await User.findOneAndUpdate({ username }, userData);
+        return await User.findOneAndUpdate({ email }, userData);
     } catch (e) {
         console.error(e);
         throw new UnknownDatabaseError();
